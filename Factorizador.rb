@@ -9,19 +9,15 @@ class Factorizador < Object
       #Arreglo donde se guardan los factores con la cantidad de veces que se encuentran el el número dado
       factores = []
       #Retorna los factores encontrados por la función fact
-      if numero >= 0
-        return factPositivo(numero,factores,2)
-      else
-        return factNegativo(numero,factores,2)
-      end
+      return fact(numero,factores,2)
     end
   #Función recursiva para encontrar los factores del numero
-    def factPositivo(numero, factores, i)
+    def fact(numero, factores, i)
       
       #Se calcula la mitad por que es el mayor factor que puede tener el número
       mitad = numero / 2
       #Se buscan los factores apartir del número que le sigue al ultimo factor encontrado
-      until i > mitad
+      until i > absoluto(mitad)
         #Si el módulo del número entre el elemento es 0 es por que es divisible entre el, por lo tanto es un factor
         if numero % i == 0
           begin
@@ -33,43 +29,23 @@ class Factorizador < Object
             factores << factor
             #Se retorna la misma función pero como número se pasa el ultimo número al que se llegó
             #con el factor encontrado y el número que le sigue al factor
-            return factPositivo((numero/i**conteo),factores,i+=1)
+            return fact((numero/i**conteo),factores,i+=1)
           end
         end
         i+=1
       end
+      
       #Agregar el ultimo número encontrado
       factores << [numero,1]
       #Si no encuentra otro factor retorna los encontrados
       return factores
     end
-    #Función recursiva para encontrar los factores del numero
-    def factNegativo(numero, factores, i)
-      
-      #Se calcula la mitad por que es el mayor factor que puede tener el número
-      mitad = numero / 2
-      #Se buscan los factores apartir del número que le sigue al ultimo factor encontrado
-      until (i*-1) < mitad
-        #Si el módulo del número entre el elemento es 0 es por que es divisible entre el, por lo tanto es un factor
-        if numero % i == 0
-          begin
-            #Se obtiene la cantidad de veces que se encuentra ese factor en el número
-            conteo = contar(numero/i,i,1)
-            #Se crea un array con el factor y la cantidad de veces que se repite
-            factor = [i, conteo]
-            #Se agrega el array al array de factores
-            factores << factor
-            #Se retorna la misma función pero como número se pasa el ultimo número al que se llegó
-            #con el factor encontrado y el número que le sigue al factor
-            return factNegativo((numero/i**conteo),factores,i+=1)
-          end
-        end
-        i+=1
+    def absoluto(num)
+      if num >=0
+        return num
+      else
+        return num*-1
       end
-      #Agregar el ultimo número encontrado
-      factores << [numero,1]
-      #Si no encuentra otro factor retorna los encontrados
-      return factores
     end
   #Función recursiva para encontrar cuantas veces se puede dividir un número entre otro
     def contar (numero,factor,conteo)
